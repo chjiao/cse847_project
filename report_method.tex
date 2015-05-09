@@ -1,0 +1,69 @@
+\section{Our Approach}
+\label{sec:method}
+
+\subsection{Feature extraction}
+After we downloaded the Yelp reviews dataset, first we preprocess the dataset before extracting features. The original dataset is in json format, we use python \textit{json} module to extract review texts and their corresponding rating stars. All the words in review text are converted to lower case. Stop words are elimitated from the reviews by \textit{nltk.corpus.stopwords} and punctuations are also deleted by using regular expression. After preprocessing, we generate bag of words and bag of pharases feature vectors for each review text. The number of each unigram, bigram, trigram in a review text are counted and saved in the corresponding vectors.
+
+\subsubsection{bag of words}
+Bag of words (unigram) models are widely used in sentiment analysis of texts. Here we generate the unigram vocabulary from all the 1,600,000 review texts, resulting a dictionary with 414,197 unique words. However, most words in this dictionary are not related to sentiment and of low frequency. To improve the efficientcy of downstream analysis, we only keep the top 20,000 most frequenct words as candidate features. To make sure that sentiment related words will be in our features, we downloaded a sentiment vocabulary from previous work\cite{hu2004mining}, which includes 4,783 negative words, 2,006 positive words. So the total length of our unigram feature vector will be 26,789.
+
+\subsubsection{bag of pharases}
+In bag of pharases model (n-gram), we generate bigram and trigram features. Here for the size of our review texts, trigram feature vectors have already been very sparse, so we did not generate n-grams with n>3 features. For bigram features, the total number of unique bigrams from the rviews is 17,721,951. Noticing that a lot of bigrams occure only once in the reviews, we only keep bigrams occuring at least four times as our features. Thus, the bigram feature vector size is reduced to 2,858,126. For trigram features, the total number of unique trigrams is 68,126,384. Similar to bigram, we also only keep trigrams which occure at least four times as features. In this way, the trigram feature vector size is reduced to 2,145,801.
+
+\subsection{Classification models}
+Our goal is to predict the star rating (1, 2, 3, 4, 5) from the review text based on sentiment analysis. If we treat the star ratings as class labels, the problem can be treated as a mlti-class classification problem. We use Vowpal Wabbit (vw) (http://hunch.net/~vw/) machine learning tool to perform Logistic Regression, Support Vector Machine (SVM) and Neural Network classification methods on our datasets. VW is a fast online learning tool which was started at Yahoo! Research and continuing at Microsoft Research. Its default learning algorithm is a variant of online gradient descent.
+
+In vw, for different classification models, the loss function can be written in the uniform way:\\
+\begin{equation}
+\sum_i(L(\textbf{x}_i,y_i,\textbf{w})+\lambda_1||\textbf{w}||_1+1/2\cdot\lambda_2||\textbf{w}||_2^2
+\end{equation}
+$\textbf{x}$ is the feature vector and $\textbf{w}$ is the parameter vector. $\lambda_1$ and $\lambda_2$ are the coefficients to specify the level of L1 and L2 regularization, respectively. Different classification models are identified by the loss function type. For example, the loss function for Logistic Regression is logistic loss: $ln(1+exp(-y\textbf{w}^T\textbf{x}))$, while loss function for SVM is hinge loss: $max(0,1-y\textbf{w}^T\textbf{x})$. Another important parameter for vw is the learning rate $\lambda$. Let $y_t$ be the ground truth class label for $t$th smaple, and $\hat{y_t}$ be the predicted class label. In online learning algorithm, the classification vector $\textbf{w}$ is updated in the way: If $y_t\neq\hat{y_t}$, then\\
+\begin{equation}
+\textbf{w}_{t+1}=\textbf{w}_t+\lambda y_t\textbf{x}_t
+\end{equation}
+
+Neural network is an interconnected group of nodes (neurons) which can compute values from inputs. A set of input neurons can be activated by the input data, the activations of these neurons are then passed to the other neurons. Repeat this process until finally an output neuron is activated. Here, we use neural network with 10 hidden layers for classifying the review samples.
+
+\subsection{Regression model}
+Considering that their is order between rating stars, that is 5$>$4$>$3$>$2$>$1. So rating 1 and 2 is more close than rating 1 and 5. We use linear regression to perform ordinal classification on our dataset.  In general, for each sample feature vector $\textbf{w}$, it is mapped to a real value $y(\textbf{x},\textbf{w})$:\\
+\begin{equation}
+y(\textbf{x},\textbf{w})=\textbf{w}^T\textbf{x}
+\end{equation}
+And $\textbf{w}$ is learned by minimizing the loss function for linear regression:\\
+\begin{equation}
+\textbf{w}^* = \underset{\textbf{w}}{\mathrm{arg min}}\frac{1}{2}\sum_{n=1}^N\left\{y_n-\textbf{w}^T\textbf{x}_n\right\}^2,
+\end{equation}
+The value $y(\textbf{x},\textbf{w})$ will be converted to an integer between 1 to 5 to represent for the star ratings.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

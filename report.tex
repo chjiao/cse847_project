@@ -27,31 +27,25 @@
 \author{Jiao Chen \\
   Computer Science and Engineering\\
   {\tt chenjiao@msu.edu} \\\And
-  Xi Yin\\
+  Shaohua Yang\\
   Computer Science and Engineering\\
-  {\tt yinxi1@msu.edu} \\}
+  {\tt yangshao@msu.edu} \\}
 
 \date{}
 
 \begin{document}
 \maketitle
 \begin{abstract}
-  The Yelp challenge dataset includes information about local businesses, reviews and users in $10$ countries across $4$ countries.
-  It can be used in various innovative ways to provide insights into business.
-  In this project, we are interested in the sentiment analysis of the Yelp review texts.
-  Particularly, we select the review texts and the corresponding rating stars as our dataset for training and testing.
-  The sentiment analysis problem is transferred into star rating estimation, which can be treated as both a classification and a regression problem.
-  We extract bag of words and bag of phrases as our feature and apply various techniques in classification and regression.
-  Moreover, we apply the Stanford sentiment analysis tool to predict the sentiment value for each sentence in the review and compare it with our results.
+In our project, we apply multi-class SVM, Loggistic Regression and Neural network to classify the image samples that belong to 164 classes. We use machine learning tool Vowpal Wabbit (VW) to perform these three classification methods. VW is a online learning based tool, which provides reasonable classification accuracy and fast training and testing speed on large dataset. We tune the hyperparameters of these three classification models on part of our training dataset, and then train three classification models based on the whole training dataset. Overall, logistic regression achives an accuracy of 37.46\% on our testing data with 250,000 samples, while the accuracy of SVM is only 30.45\% on the same testing dataset. Neural network is much slower than SVM and logistic regression, but provides the highest accuracy (39.30\%) and MAP on our testing dataset. For evaluation, results of these three models are assembled together with equal weight. We get a evaluation MAP score of 72.81\%, which ranks first among 18 teams in this class.   
 \end{abstract}
 
 
-\input{report_intro.tex}
-\input{report_prior.tex}
+%\input{report_intro.tex}
+%\input{report_prior.tex}
 %\input{report_tables.tex}
 \input{report_method.tex}
-\input{report_evaluation.tex}
-\input{report_discussion.tex}
+\input{report_result.tex}
+%\input{report_discussion.tex}
 \input{report_conclusion.tex}
 
 
@@ -61,38 +55,5 @@
 \bibliography{references}
 }
 
-%\begin{thebibliography}{}
-%
-%\bibitem[\protect\citename{Aho and Ullman}1972]{Aho:72}
-%Alfred~V. Aho and Jeffrey~D. Ullman.
-%\newblock 1972.
-%\newblock {\em The Theory of Parsing, Translation and Compiling}, volume~1.
-%\newblock Prentice-{Hall}, Englewood Cliffs, NJ.
-%
-%\bibitem[\protect\citename{{American Psychological Association}}1983]{APA:83}
-%{American Psychological Association}.
-%\newblock 1983.
-%\newblock {\em Publications Manual}.
-%\newblock American Psychological Association, Washington, DC.
-%
-%\bibitem[\protect\citename{{Association for Computing Machinery}}1983]{ACM:83}
-%{Association for Computing Machinery}.
-%\newblock 1983.
-%\newblock {\em Computing Reviews}, 24(11):503--512.
-%
-%\bibitem[\protect\citename{Chandra \bgroup et al.\egroup }1981]{Chandra:81}
-%Ashok~K. Chandra, Dexter~C. Kozen, and Larry~J. Stockmeyer.
-%\newblock 1981.
-%\newblock Alternation.
-%\newblock {\em Journal of the Association for Computing Machinery},
-%  28(1):114--133.
-%
-%\bibitem[\protect\citename{Gusfield}1997]{Gusfield:97}
-%Dan Gusfield.
-%\newblock 1997.
-%\newblock {\em Algorithms on Strings, Trees and Sequences}.
-%\newblock Cambridge University Press, Cambridge, UK.
-%
-%\end{thebibliography}
 
 \end{document}
